@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08040e">
+  <meta name="description" content="Warisha's little universe: a first website celebrating curiosity, learning, creativity and the people who make the journey special.">
+  <title>WARISHA | My Little Universe</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --night: #08040e;
+      --plum: #21112d;
+      --lavender: #e1c8f2;
+      --soft-lavender: #c8b7d3;
+      --glow: #b990d3;
+      --muted: #b19ac1;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 78px; }
+    body {
+      min-width: 320px;
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--soft-lavender);
+      background: var(--night);
+      font-family: Georgia, "Palatino Linotype", serif;
+    }
+    body::before {
+      position: fixed;
+      z-index: -2;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 10%, #281136 0, transparent 42%),
+        radial-gradient(ellipse at 90% 75%, #20102d 0, transparent 40%),
+        var(--night);
+      content: "";
+    }
+    button { font: inherit; }
+    button:focus-visible, a:focus-visible {
+      outline: 2px solid #efcffc;
+      outline-offset: 4px;
+    }
+    a { color: inherit; }
+    .skip-link {
+      position: fixed;
+      z-index: 100;
+      top: 10px;
+      left: 10px;
+      padding: 10px 16px;
+      transform: translateY(-150%);
+      border-radius: 6px;
+      color: var(--night);
+      background: var(--lavender);
+    }
+    .skip-link:focus { transform: translateY(0); }
+    #stars {
+      position: fixed;
+      z-index: -1;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: #e7d4fa;
+      animation: twinkle var(--twinkle, 3s) var(--delay, 0s) infinite alternate;
+    }
+    .scroll-progress {
+      position: fixed;
+      z-index: 15;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      background: linear-gradient(90deg, #875aa3, #e1c8f2);
+      pointer-events: none;
+    }
+    nav {
+      position: fixed;
+      z-index: 10;
+      top: 0;
+      left: 0;
+      display: flex;
+      width: 100%;
+      min-height: 66px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 7%;
+      border-bottom: 1px solid #4b315344;
+      background: #08040eeb;
+      backdrop-filter: blur(14px);
+    }
+    .logo {
+      color: var(--lavender);
+      font-size: 25px;
+      letter-spacing: 4px;
+      text-decoration: none;
+    }
+    .navnote {
+      color: var(--muted);
+      font: 9px Arial, sans-serif;
+      letter-spacing: 2px;
+    }
+    main { position: relative; }
+    section {
+      display: flex;
+      min-height: 85vh;
+      flex-direction: column;
+      justify-content: center;
+      padding: 110px 9%;
+    }
+    .hero {
+      min-height: 100svh;
+      align-items: center;
+      text-align: center;
+    }
+    .hero-orbit {
+      position: relative;
+      display: grid;
+      width: clamp(180px, 38vw, 340px);
+      aspect-ratio: 1;
+      place-items: center;
+      margin: 28px 0 5px;
+      border: 1px solid #b990d326;
+      border-radius: 50%;
+      animation: orbitBreath 8s ease-in-out infinite;
+    }
+    .hero-orbit::before, .hero-orbit::after {
+      position: absolute;
+      inset: 11%;
+      border: 1px solid #b990d328;
+      border-radius: 50%;
+      content: "";
+    }
+    .hero-orbit::after {
+      inset: 23%;
+      border-color: #e7d4fa20;
+    }
+    .hero-star {
+      color: #e7d4fa;
+      font-size: clamp(80px, 15vw, 140px);
+      text-shadow: 0 0 34px #b58bd688;
+      animation: heroGlow 4s ease-in-out infinite alternate;
+    }
+    .orbit-dot {
+      position: absolute;
+      top: 50%;
+      left: -6px;
+      width: 12px;
+      height: 12px;
+      border: 2px solid #160a21;
+      border-radius: 50%;
+      background: #d9b3ef;
+      box-shadow: 0 0 18px #d9b3ef;
+      animation: orbitSpin 12s linear infinite;
+      transform-origin: calc(clamp(180px, 38vw, 340px) / 2 + 6px) 0;
+    }
+    .eyebrow, .tag, .small {
+      color: #b29ac4;
+      font: 10px Arial, sans-serif;
+      letter-spacing: 3px;
+    }
+    h1, h2, h3 {
+      font-family: Georgia, "Palatino Linotype", serif;
+      font-weight: 400;
+    }
+    h1 {
+      margin: 22px 0;
+      color: #f0e2fa;
+      font-size: clamp(60px, 14vw, 112px);
+      letter-spacing: -3px;
+      text-shadow: 0 0 35px #b58bd633;
+    }
+    h2 {
+      margin: 20px 0;
+      color: #dfc5f0;
+      font-size: clamp(34px, 7vw, 55px);
+      line-height: 1.3;
+    }
+    h3 {
+      margin-bottom: 12px;
+      color: #e0c6f1;
+      font-size: 23px;
+    }
+    p {
+      max-width: 680px;
+      color: #c1b0cd;
+      font-size: clamp(17px, 3.6vw, 20px);
+      line-height: 1.95;
+    }
+    .line {
+      width: 48px;
+      height: 1px;
+      margin: 28px auto;
+      background: #a17bb7;
+      box-shadow: 0 0 14px #b990d3;
+    }
+    .center { align-items: center; text-align: center; }
+    .card-wrap {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+    .card {
+      padding: 25px 17px;
+      transform-style: preserve-3d;
+      border: 1px solid #4b3159;
+      border-radius: 17px;
+      background: linear-gradient(145deg, #1b1025, #100817);
+      transition: transform .35s ease, border-color .3s ease, box-shadow .3s ease;
+    }
+    .card:hover {
+      transform: translateY(-6px) rotateX(2deg);
+      border-color: #b18ac9;
+      box-shadow: 0 16px 36px #0005, 0 0 20px #b990d31b;
+    }
+    .card p { color: #b6a2c3; font-size: 15px; line-height: 1.8; }
+    .statement {
+      color: #ead7f7;
+      font-size: clamp(32px, 7vw, 57px);
+      line-height: 1.6;
+      text-align: center;
+    }
+    .heart-zone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      margin: 28px 0;
+    }
+    .heart-button {
+      display: grid;
+      width: 112px;
+      height: 112px;
+      place-items: center;
+      border: 1px solid #a47abc;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 25%, #392045, #170b20 70%);
+      box-shadow: 0 0 35px #a15fc52c, inset 0 0 20px #7c49851a;
+      cursor: pointer;
+      transition: transform .25s ease;
+    }
+    .heart-button:hover { transform: scale(1.06); }
+    .heart-button:active { transform: scale(.9); }
+    .heart-button span {
+      color: #e8c9fa;
+      font-size: 47px;
+      text-shadow: 0 0 20px #d89cff88;
+      animation: heartbeat 1.4s infinite;
+    }
+    #heartMessage { min-height: 30px; color: #d3b6e5; font-size: 16px; text-align: center; }
+    .floating-heart {
+      position: fixed;
+      z-index: 20;
+      bottom: 20%;
+      pointer-events: none;
+      color: #e6cff6;
+      font-size: 25px;
+      text-shadow: 0 0 14px #c18ee8;
+      animation: floatUp 2.8s ease-out forwards;
+    }
+    .open-btn {
+      width: 100px;
+      height: 100px;
+      border: 1px solid #b58bd0;
+      border-radius: 50%;
+      color: #f0dafa;
+      background: #21112d;
+      box-shadow: 0 0 30px #a66ac62b;
+      cursor: pointer;
+      font: 15px Georgia, serif;
+      letter-spacing: 2px;
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .open-btn:hover { transform: scale(1.07); box-shadow: 0 0 40px #b37bd955; }
+    footer { padding: 30px 16px; color: #947da4; font-size: 13px; text-align: center; }
+    #letterLayer {
+      position: fixed;
+      z-index: 30;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: #050309f5;
+    }
+    #letterLayer[aria-hidden="false"] { display: flex; }
+    .paper {
+      width: 100%;
+      max-width: 480px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 32px 26px;
+      border-radius: 4px;
+      color: #46364b;
+      background: #eee2d0;
+      box-shadow: 0 0 60px #b18ac833;
+      animation: paperIn .4s ease;
+    }
+    .paper h2 { margin: 14px 0; color: #674676; font-size: 33px; }
+    .paper p { color: #514254; font-size: 16px; line-height: 1.9; }
+    .paper .signature {
+      margin-top: 18px;
+      color: #684775;
+      font-family: "Segoe Script", "Brush Script MT", cursive;
+      font-size: 27px;
+      text-align: right;
+    }
+    .paper-heart { color: #95658e; font-size: 23px; text-align: center; }
+    .close {
+      display: block;
+      margin: 24px auto 0;
+      padding: 10px 24px;
+      border: 1px solid #92779b;
+      border-radius: 25px;
+      color: #60456d;
+      background: transparent;
+      cursor: pointer;
+    }
+    .ultra-thanks {
+      position: relative;
+      min-height: 100svh;
+      overflow: hidden;
+      align-items: center;
+      padding: 100px 22px;
+      border-top: 1px solid #69427d;
+      border-bottom: 1px solid #69427d;
+      background: radial-gradient(ellipse at 50% 35%, #321641 0%, #160a21 42%, #08040e 80%);
+      text-align: center;
+    }
+    .thanks-stars {
+      margin: 18px 0;
+      color: #c3a0dd;
+      letter-spacing: 5px;
+      animation: thanksGlow 3s infinite alternate;
+    }
+    .thanks-label { margin-bottom: 25px; color: #c2a4d7; font: 10px Arial, sans-serif; letter-spacing: 4px; }
+    .thanks-title {
+      color: #f0e0fa;
+      font-size: clamp(44px, 10vw, 76px);
+      font-weight: 400;
+      line-height: 1.17;
+      text-shadow: 0 0 30px #b87bdf55;
+    }
+    .thanks-title span { color: #b990d3; font-style: italic; }
+    .thanks-divider { position: relative; width: 140px; margin: 30px 0; border-top: 1px solid #76518c; }
+    .thanks-divider span { position: relative; top: -15px; padding: 0 15px; color: #e4c1f8; background: #21102d; font-size: 21px; }
+    .thanks-text { max-width: 400px; color: #d0bedb; font-size: 17px; line-height: 1.9; }
+    .thanks-heart {
+      width: 88px;
+      height: 88px;
+      margin: 35px 0 18px;
+      border: 1px solid #b58bd0;
+      border-radius: 50%;
+      color: #f4dfff;
+      background: radial-gradient(circle, #482652, #190c24);
+      box-shadow: 0 0 35px #bd84dc44, inset 0 0 20px #bd84dc22;
+      cursor: pointer;
+      font-size: 40px;
+      animation: thanksPulse 2s infinite;
+    }
+    .thanks-hint { color: #d0b6df; font: 9px Arial, sans-serif; letter-spacing: 2px; line-height: 1.8; }
+    .thanks-ending { margin-top: 45px; color: #ead6f5; font-size: 19px; }
+    .thanks-signature { margin-top: 15px; color: #f0d9ff; font: 31px "Segoe Script", "Brush Script MT", cursive; }
+    .thanks-float {
+      position: fixed;
+      z-index: 999;
+      bottom: -30px;
+      pointer-events: none;
+      color: #e3bafa;
+      font-size: 26px;
+      text-shadow: 0 0 15px #c38ae9;
+      animation: thanksRise 2.8s ease-out forwards;
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity .8s ease, transform .8s cubic-bezier(.2,.65,.3,1);
+    }
+    .reveal.is-visible { opacity: 1; transform: translateY(0); }
+    @keyframes twinkle { from { opacity: .15; transform: scale(.7); } to { opacity: .9; transform: scale(1.5); } }
+    @keyframes heartbeat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.13); } }
+    @keyframes floatUp { 0% { opacity: 0; transform: translateY(0) scale(.4); } 15% { opacity: 1; } 100% { opacity: 0; transform: translateY(-75vh) scale(1.5) rotate(25deg); } }
+    @keyframes paperIn { from { opacity: 0; transform: translateY(15px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes thanksRise { 0% { opacity: 0; transform: translateY(0) scale(.5); } 15% { opacity: 1; } 100% { opacity: 0; transform: translateY(-110vh) rotate(35deg) scale(1.5); } }
+    @keyframes thanksPulse { 0%,100% { box-shadow: 0 0 22px #bd84dc33; } 50% { box-shadow: 0 0 42px #bd84dc77; } }
+    @keyframes thanksGlow { from { opacity: .55; } to { opacity: 1; } }
+    @keyframes orbitBreath { 0%,100% { transform: scale(.96); opacity: .78; } 50% { transform: scale(1.04); opacity: 1; } }
+    @keyframes orbitSpin { to { transform: rotate(360deg); } }
+    @keyframes heroGlow { from { opacity: .78; transform: scale(.95); } to { opacity: 1; transform: scale(1.06); } }
+    @media (min-width: 700px) {
+      section { padding-right: 15%; padding-left: 15%; }
+      .card-wrap { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px) {
+      nav { min-height: 60px; padding-right: 6%; padding-left: 6%; }
+      .logo { font-size: 22px; }
+      .navnote { font-size: 8px; letter-spacing: 1.5px; }
+      section { min-height: 78vh; padding: 90px 8%; }
+      .hero { min-height: 100svh; }
+      .card-wrap { grid-template-columns: 1fr; }
+      .card { padding: 21px; }
+      .statement { line-height: 1.35; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to story</a>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <div id="stars" aria-hidden="true"></div>
+
+  <nav aria-label="Main navigation">
+    <a class="logo" href="#home" aria-label="Warisha, back to top">W.O</a>
+    <div class="navnote">A WORLD BY WARISHA</div>
+  </nav>
+
+  <main id="main">
+    <section class="hero" id="home">
+      <div class="eyebrow reveal">WELCOME TO MY LITTLE UNIVERSE</div>
+      <div class="hero-orbit reveal" aria-hidden="true">
+        <span class="hero-star">✦</span>
+        <span class="orbit-dot"></span>
+      </div>
+      <h1 class="reveal">Warisha.</h1>
+      <p class="reveal">One dream. One beginning. A whole world of possibilities.</p>
+      <div class="line reveal"></div>
+      <div class="small reveal">SCROLL SLOWLY · DISCOVER MY STORY ↓</div>
+    </section>
+
+    <section class="center" id="beginning">
+      <div class="tag reveal">01 — THE BEGINNING</div>
+      <h2 class="reveal">Every story starts somewhere.</h2>
+      <p class="typing reveal">This is my first website. I began with curiosity and the courage to try something new. It may be my first step, but it belongs to me.</p>
+    </section>
+
+    <section id="journey">
+      <div class="tag reveal">02 — MY JOURNEY</div>
+      <h2 class="reveal">Learning. Trying. Becoming.</h2>
+      <p class="typing reveal">I don't have to know everything today. I only have to keep learning, stay curious, and give my ideas a chance to become real.</p>
+      <div class="card-wrap">
+        <article class="card reveal"><h3>Curiosity</h3><p>Asking questions and discovering new possibilities.</p></article>
+        <article class="card reveal"><h3>Learning</h3><p>Every new skill begins with a first attempt.</p></article>
+        <article class="card reveal"><h3>Creating</h3><p>Turning little ideas into something of my own.</p></article>
+        <article class="card reveal"><h3>Growing</h3><p>Moving forward one small step at a time.</p></article>
+      </div>
+    </section>
+
+    <section class="center" id="promise">
+      <div class="tag reveal">03 — A PROMISE TO MYSELF</div>
+      <p class="statement typing reveal">I'm working on myself.<br>InshaAllah.</p>
+      <div class="line reveal"></div>
+      <p class="reveal">Quiet progress is still progress.</p>
+    </section>
+
+    <section class="center" id="love">
+      <div class="tag reveal">04 — A LITTLE LOVE</div>
+      <h2 class="reveal">Tap the heart.</h2>
+      <p class="reveal">Some little things deserve a little magic.</p>
+      <div class="heart-zone reveal">
+        <button class="heart-button" id="heartButton" aria-label="Release floating hearts"><span>♡</span></button>
+        <div id="heartMessage" aria-live="polite">Tap once and watch the magic ✨</div>
+      </div>
+    </section>
+
+    <section class="center" id="next">
+      <div class="tag reveal">05 — WHAT COMES NEXT</div>
+      <h2 class="reveal">My story is still unfolding.</h2>
+      <p class="typing reveal">There is more to learn, more to create, and more to discover. This is not my final chapter. It is the beginning.</p>
+      <div class="line reveal"></div>
+      <p class="reveal">Keep learning. Keep creating. Keep believing.</p>
+    </section>
+
+    <section class="center" id="letter" style="min-height:100vh">
+      <div class="tag reveal">A LETTER FROM MY HEART</div>
+      <h2 class="reveal">Thank You.</h2>
+      <p class="reveal">Some words are meant to be opened, not just read.</p>
+      <div style="height:25px"></div>
+      <button class="open-btn reveal" id="openLetter" aria-haspopup="dialog" aria-controls="letterLayer">OPEN ♡</button>
+      <p class="reveal" style="margin-top:20px;font-size:15px">A letter from Warisha</p>
+    </section>
+
+    <section class="ultra-thanks" id="thanks">
+      <div class="thanks-stars reveal" aria-hidden="true">✦　·　✧　·　✦</div>
+      <p class="thanks-label reveal">WITH LOVE &amp; GRATITUDE</p>
+      <h2 class="thanks-title reveal">Thank You<br><span>So Much.</span></h2>
+      <div class="thanks-divider reveal"><span>♡</span></div>
+      <p class="thanks-text reveal">For every little moment, every kind heart, and everyone who made this journey special.</p>
+      <button class="thanks-heart reveal" id="thanksHeart" aria-label="Release thank you hearts">♡</button>
+      <p id="thanksMessage" class="thanks-hint reveal" aria-live="polite">TAP THE HEART FOR A LITTLE MAGIC</p>
+      <p class="thanks-ending reveal">This is only the beginning.</p>
+      <p class="thanks-signature reveal">— Warisha</p>
+      <div class="thanks-stars reveal" aria-hidden="true">✧　·　♡　·　✧</div>
+    </section>
+  </main>
+
+  <footer>MY FIRST CREATION · A LITTLE WORLD OF MY OWN ♡</footer>
+
+  <div id="letterLayer" role="dialog" aria-modal="true" aria-labelledby="letterTitle" aria-hidden="true">
+    <div class="paper">
+      <div class="paper-heart" aria-hidden="true">♡</div>
+      <h2 id="letterTitle">To my family,</h2>
+      <p>Thank you, Mom, Dad and Brother, for giving me the confidence to learn, to try and to keep going. Your support helped me believe that I could create something of my own. This is only my first step, but I will always remember the people who helped me take it.</p>
+      <p class="signature">— Warisha</p>
+      <button class="close" id="closeLetter">Close ✕</button>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const starBox = document.getElementById("stars");
+      const progressBar = document.getElementById("scrollProgress");
+      const letterLayer = document.getElementById("letterLayer");
+      const openLetter = document.getElementById("openLetter");
+      const closeLetter = document.getElementById("closeLetter");
+
+      for (let i = 0; i < 110; i += 1) {
+        const star = document.createElement("span");
+        star.className = "star";
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.setProperty("--delay", `${Math.random() * 4}s`);
+        star.style.setProperty("--twinkle", `${2 + Math.random() * 4}s`);
+        starBox.appendChild(star);
+      }
+
+      const updateProgress = () => {
+        const range = document.documentElement.scrollHeight - window.innerHeight;
+        progressBar.style.transform = `scaleX(${range > 0 ? window.scrollY / range : 0})`;
+      };
+      window.addEventListener("scroll", updateProgress, { passive: true });
+      window.addEventListener("resize", updateProgress);
+      updateProgress();
+
+      const revealItems = document.querySelectorAll(".reveal");
+      if ("IntersectionObserver" in window && !reducedMotion) {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        }, { threshold: 0.14 });
+        revealItems.forEach(item => revealObserver.observe(item));
+      } else {
+        revealItems.forEach(item => item.classList.add("is-visible"));
+      }
+
+      const typeItems = document.querySelectorAll(".typing");
+      if ("IntersectionObserver" in window && !reducedMotion) {
+        const typingObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting || entry.target.dataset.typed) return;
+            const element = entry.target;
+            element.dataset.typed = "true";
+            const original = element.innerHTML;
+            const text = element.innerText;
+            element.setAttribute("aria-label", text.replace(/\s+/g, " ").trim());
+            element.textContent = "";
+            let index = 0;
+            const typeNext = () => {
+              if (!element.isConnected) return;
+              if (index < text.length) {
+                element.textContent += text.charAt(index);
+                index += 1;
+                window.setTimeout(typeNext, 22);
+              } else {
+                element.innerHTML = original;
+              }
+            };
+            typeNext();
+            observer.unobserve(element);
+          });
+        }, { threshold: 0.3 });
+        typeItems.forEach(item => typingObserver.observe(item));
+      }
+
+      const releaseHearts = (amount, className = "floating-heart") => {
+        const symbols = ["♡", "♥", "💜", "✦", "✨"];
+        for (let i = 0; i < amount; i += 1) {
+          const heart = document.createElement("span");
+          heart.className = className;
+          heart.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+          heart.style.left = `${5 + Math.random() * 90}vw`;
+          heart.style.animationDelay = `${Math.random() * 0.7}s`;
+          heart.style.fontSize = `${18 + Math.random() * 25}px`;
+          heart.setAttribute("aria-hidden", "true");
+          document.body.appendChild(heart);
+          window.setTimeout(() => heart.remove(), 3400);
+        }
+      };
+
+      let heartTaps = 0;
+      const heartButton = document.getElementById("heartButton");
+      heartButton.addEventListener("click", () => {
+        heartTaps += 1;
+        releaseHearts(16);
+        heartButton.querySelector("span").textContent = "♥";
+        document.getElementById("heartMessage").textContent = heartTaps % 2
+          ? "Sending a little love into the universe. 💜"
+          : "A little more magic, every time. ✨";
+        window.setTimeout(() => { heartButton.querySelector("span").textContent = "♡"; }, 650);
+      });
+
+      const thanksHeart = document.getElementById("thanksHeart");
+      thanksHeart.addEventListener("click", () => {
+        releaseHearts(28, "thanks-float");
+        thanksHeart.textContent = "♥";
+        document.getElementById("thanksMessage").textContent = "Sending love & gratitude. ♡";
+        window.setTimeout(() => { thanksHeart.textContent = "♡"; }, 700);
+      });
+
+      let previousFocus = null;
+      const showLetter = () => {
+        previousFocus = document.activeElement;
+        letterLayer.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        closeLetter.focus();
+      };
+      const hideLetter = () => {
+        letterLayer.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        if (previousFocus instanceof HTMLElement) previousFocus.focus();
+      };
+      openLetter.addEventListener("click", showLetter);
+      closeLetter.addEventListener("click", hideLetter);
+      letterLayer.addEventListener("click", event => {
+        if (event.target === letterLayer) hideLetter();
+      });
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && letterLayer.getAttribute("aria-hidden") === "false") hideLetter();
+      });
+    })();
+  </script>
+</body>
+</html>
